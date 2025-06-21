@@ -181,7 +181,7 @@ jobs:
         run: |
          cd kernel_workspace/kernel_platform
          sed -i 's/${scm_version}//' ./common/scripts/setlocalversion
-         sudo sed -i 's/-4k/-android15-TG@qdykernel/g' ./common/arch/arm64/configs/gki_defconfig
+         sudo sed -i 's/-4k/-android15-8-g013ec21bba94-abogki383916444-4k/g' ./common/arch/arm64/configs/gki_defconfig
         
       - name: Add sched_ext
         if: ${{inputs.enable_feature_z }}
