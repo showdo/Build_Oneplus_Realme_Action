@@ -18,6 +18,7 @@ error() {
 KERNEL_SUFFIX="-android15-8-g013ec21bba94-abogki383916444-4k"
 ENABLE_KPM=true
 ENABLE_LZ4KD=true
+ENABLE_BBR=true
 
 # 机型选择
 info "请选择要编译的机型："
@@ -61,11 +62,14 @@ read -p "输入内核名称修改(可改中文和emoji 回车默认): " input_su
 read -p "输入内核构建日期更改(回车默认为原厂) : " input_time
 [ -n "$input_time" ] && KERNEL_TIME="$input_time"
 
-read -p "是否启用kpm?(回车默认开启) [y/N]: " kpm
-[[ "$kpm" =~ [yY] ]] && ENABLE_KPM=true
+read -p "是否启用kpm?(回车默认开启) [Y/n]: " kpm
+[[ "$kpm" =~ [nN] ]] && ENABLE_KPM=false
 
-read -p "是否启用lz4+zstd?(回车默认开启) [y/N]: " lz4
-[[ "$lz4" =~ [yY] ]] && ENABLE_LZ4KD=true
+read -p "是否启用lz4+zstd?(回车默认开启) [Y/n]: " lz4
+[[ "$lz4" =~ [nN] ]] && ENABLE_LZ4KD=false
+
+read -p "是否启用bbr?(回车默认开启) [Y/n]: " bbr
+[[ "$bbr" =~ [nN] ]] && ENABLE_BBR=false
 
 # 环境变量 - 按机型区分ccache目录
 export CCACHE_COMPILERCHECK="%compiler% -dumpmachine; %compiler% -dumpversion"
@@ -269,15 +273,18 @@ CONFIG_CRYPTO_LZ4HC=y
 CONFIG_CRYPTO_LZ4=y
 CONFIG_CRYPTO_LZ4K=y
 CONFIG_CRYPTO_842=y
-# BBR
-CONFIG_TCP_CONG_ADVANCED=y
-CONFIG_TCP_CONG_BBR=y
-CONFIG_NET_SCH_FQ=y
-CONFIG_TCP_CONG_BIC=n
-CONFIG_TCP_CONG_CUBIC=n
-CONFIG_TCP_CONG_WESTWOOD=n
-CONFIG_TCP_CONG_HTCP=n
-CONFIG_DEFAULT_TCP_CONG=bbr
+
+if [ "$ENABLE_BBR" = "true"]; then
+  # BBR
+  CONFIG_TCP_CONG_ADVANCED=y
+  CONFIG_TCP_CONG_BBR=y
+  CONFIG_NET_SCH_FQ=y
+  CONFIG_TCP_CONG_BIC=n
+  CONFIG_TCP_CONG_CUBIC=n
+  CONFIG_TCP_CONG_WESTWOOD=n
+  CONFIG_TCP_CONG_HTCP=n
+  CONFIG_DEFAULT_TCP_CONG=bbr
+fi
 
 CONFIG_LOCALVERSION_AUTO=n" >> gki_defconfig
 
