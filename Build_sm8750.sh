@@ -15,7 +15,7 @@ error() {
 }
 
 # 参数设置
-ENABLE_KPM=true
+ENABLE_KPM=y
 ENABLE_LZ4KD=true
 
 # 机型选择
@@ -101,7 +101,7 @@ read -p "输入内核名称修改(可改中文和emoji，回车默认): " input_
 read -p "输入内核构建日期更改(回车默认为原厂): " input_time
 [ -n "$input_time" ] && KERNEL_TIME="$input_time"
 
-ENABLE_KPM=$(prompt_boolean "是否启用KPM？(回车默认开启) [y/N]: " true)
+ENABLE_KPM=$(prompt_boolean "是否启用KPM？(回车默认开启) [y/N]: " y)
 ENABLE_LZ4KD=$(prompt_boolean "是否启用LZ4KD？(回车默认开启) [y/N]: " true)
 ENABLE_BBR=$(prompt_boolean "是否启用BBR？(回车默认关闭) [y/N]: " false)
 
@@ -329,7 +329,7 @@ cd $KERNEL_WORKSPACE/kernel_platform || error "返回kernel_platform目录失败
 sudo sed -i 's/check_defconfig//' $KERNEL_WORKSPACE/kernel_platform/common/build.config.gki || error "修改build.config.gki失败"
 
 # 添加KPM配置
-if [ "$ENABLE_KPM" = "true" ]; then
+if [ "$ENABLE_KPM" = "y" ]; then
     info "添加KPM配置..."
     echo "CONFIG_KPM=y" >> common/arch/arm64/configs/gki_defconfig
     sudo sed -i 's/check_defconfig//' common/build.config.gki || error "修改build.config.gki失败"
