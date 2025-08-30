@@ -15,7 +15,7 @@ on:
           - 'realme_GT7'
           - 'realme_GT7pro'
           - 'realme_GT7pro_Speed'
-        default: 'oneplus_ace5_pro'
+        default: 'oneplus_13'
 
       keep_original_settings:
         description: "📝保持原内核名称及构建时间(不懂请保持默认)"
