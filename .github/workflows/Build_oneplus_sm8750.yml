@@ -7,6 +7,7 @@ on:
         required: true
         type: choice
         options:
+          - 'vivoX80'
           - 'oneplus_13'
           - 'oneplus_ace5_pro'
           - 'oneplus_ace_6'
